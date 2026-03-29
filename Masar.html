@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مركز إيجابيون للتدريب | الصفحة الرئيسية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* ================= المتغيرات الأساسية ================= */
+        :root {
+            --primary-color: #1e3a8a; /* أزرق داكن احترافي */
+            --secondary-color: #f59e0b; /* أصفر/ذهبي للفت الانتباه */
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --bg-light: #f3f4f6;
+            --white: #ffffff;
+            --transition: all 0.3s ease-in-out;
+        }
+
+        /* ================= إعادة ضبط المتصفح ================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            background-color: var(--white);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        /* ================= شريط التنقل (Navbar) ================= */
+        header {
+            background-color: var(--white);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--primary-color);
+        }
+
+        .logo span {
+            color: var(--secondary-color);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--secondary-color);
+        }
+
+        .btn-register {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 10px 25px;
+            border-radius: 5px;
+            font-weight: 700;
+            transition: var(--transition);
+        }
+
+        .btn-register:hover {
+            background-color: var(--secondary-color);
+            color: var(--text-dark);
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--primary-color);
+        }
+
+        /* ================= قسم البداية (Hero Section) ================= */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(30, 58, 138, 0.8), rgba(30, 58, 138, 0.9)), url('https://images.unsplash.com/photo-1524178232363-1fb2b075b655?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--white);
+            padding: 0 5%;
+            margin-top: 70px;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            animation: fadeInDown 1s ease;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: fadeInUp 1s ease 0.5s both;
+        }
+
+        .hero-buttons {
+            animation: fadeInUp 1s ease 0.8s both;
+        }
+
+        .btn-primary, .btn-secondary {
+            display: inline-block;
+            padding: 15px 35px;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin: 10px;
+            transition: var(--transition);
+        }
+
+        .btn-primary {
+            background-color: var(--secondary-color);
+            color: var(--text-dark);
+        }
+
+        .btn-primary:hover {
+            background-color: #d97706;
+            color: var(--white);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            border: 2px solid var(--white);
+            color: var(--white);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--white);
+            color: var(--primary-color);
+        }
+
+        /* ================= الأقسام العامة ================= */
+        .section-padding {
+            padding: 80px 5%;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            width: 50%;
+            height: 4px;
+            background-color: var(--secondary-color);
+            bottom: -10px;
+            left: 25%;
+            border-radius: 2px;
+        }
+
+        .section-title p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            margin-top: 15px;
+        }
+
+        /* ================= قسم الدورات ================= */
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .course-card {
+            background-color: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: var(--transition);
+            border: 1px solid #e5e7eb;
+        }
+
+        .course-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
+        .course-img {
+            width: 100%;
+            height: 200px;
+            background-color: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--primary-color);
+            position: relative;
+        }
+
+        .course-content {
+            padding: 25px;
+        }
+
+        .course-content h3 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        .course-content p {
+            color: var(--text-light);
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+
+        .course-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+
+        .course-price {
+            font-weight: 700;
+            color: var(--secondary-color);
+            font-size: 1.2rem;
+        }
+
+        /* ================= قسم المميزات (عن المركز) ================= */
+        .features {
+            background-color: var(--bg-light);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .feature-box {
+            text-align: center;
+            padding: 40px 20px;
+            background: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: var(--transition);
+        }
+
+        .feature-box:hover {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+
+        .feature-box:hover .feature-icon, .feature-box:hover p {
+            color: var(--white);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+        }
+
+        .feature-box h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+        }
+
+        .feature-box p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        /* ================= قسم تواصل معنا ================= */
+        .contact-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--white);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 5px rgba(30, 58, 138, 0.3);
+        }
+
+        textarea.form-control {
+            height: 150px;
+            resize: vertical;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-submit:hover {
+            background-color: var(--secondary-color);
+            color: var(--text-dark);
+        }
+
+        /* ================= التذييل (Footer) ================= */
+        footer {
+            background-color: #111827;
+            color: var(--white);
+            padding: 60px 5% 20px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+            margin-bottom: 40px;
+        }
+
+        .footer-col h3 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--secondary-color);
+        }
+
+        .footer-col p {
+            color: #9ca3af;
+            line-height: 1.8;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: #374151;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background-color: var(--secondary-color);
+            color: var(--text-dark);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #374151;
+            color: #9ca3af;
+            font-size: 0.9rem;
+        }
+
+        /* ================= الحركات (Animations) ================= */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ================= الاستجابة للشاشات الصغيرة (Media Queries) ================= */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background-color: var(--white);
+                padding: 20px;
+                box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .section-title h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header id="header">
+        <div class="nav-container">
+            <a href="#" class="logo">إيجابيون <span>للتدريب</span></a>
+            
+            <i class="fas fa-bars menu-toggle" id="mobile-menu"></i>
+
+            <ul class="nav-links" id="nav-links">
+                <li><a href="#home">الرئيسية</a></li>
+                <li><a href="#about">عن المركز</a></li>
+                <li><a href="#courses">الدورات التدريبية</a></li>
+                <li><a href="#contact">تواصل معنا</a></li>
+                <li><a href="#contact" class="btn-register">سجل الآن</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>نبني المستقبل بأسس راسخة</h1>
+            <p>مركز إيجابيون للتدريب يقدم لك أحدث البرامج التدريبية المعتمدة لتطوير مهاراتك المهنية والتقنية على أيدي نخبة من الخبراء.</p>
+            <div class="hero-buttons">
+                <a href="#courses" class="btn-primary">تصفح الدورات</a>
+                <a href="#about" class="btn-secondary">تعرف علينا أكثر</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="features section-padding" id="about">
+        <div class="section-title">
+            <h2>لماذا تختار مركز إيجابيون؟</h2>
+            <p>نحن نلتزم بتقديم تجربة تعليمية فريدة تدمج بين الجانب النظري والتطبيق العملي.</p>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feature-box">
+                <i class="fas fa-chalkboard-teacher feature-icon"></i>
+                <h3>مدربون محترفون</h3>
+                <p>فريقنا يتكون من نخبة من المدربين ذوي الخبرة العملية الأكاديمية العالية في مجالاتهم.</p>
+            </div>
+            <div class="feature-box">
+                <i class="fas fa-laptop-code feature-icon"></i>
+                <h3>تطبيق عملي</h3>
+                <p>نركز على المشاريع العملية لضمان فهم المتدرب وتأهيله لسوق العمل مباشرة.</p>
+            </div>
+            <div class="feature-box">
+                <i class="fas fa-certificate feature-icon"></i>
+                <h3>شهادات معتمدة</h3>
+                <p>يحصل المتدرب على شهادة معتمدة بنهاية كل دورة تدريبية تثبت كفاءته واجتيازه للبرنامج.</p>
+            </div>
+            <div class="feature-box">
+                <i class="fas fa-users feature-icon"></i>
+                <h3>بيئة محفزة</h3>
+                <p>نوفر بيئة إيجابية تفاعلية تدعم الابتكار وتبادل الأفكار بين المتدربين والمدربين.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="courses section-padding" id="courses">
+        <div class="section-title">
+            <h2>أحدث البرامج التدريبية</h2>
+            <p>استكشف مجموعة متنوعة من الدورات المصممة لتلبية احتياجات سوق العمل الحالي.</p>
+        </div>
+
+        <div class="courses-grid">
+            <div class="course-card">
+                <div class="course-img">
+                    <i class="fas fa-code"></i>
+                </div>
+                <div class="course-content">
+                    <h3>تطوير تطبيقات الويب والموبايل</h3>
+                    <p>تعلم بناء مواقع وتطبيقات تفاعلية من الصفر باستخدام أحدث التقنيات مثل HTML, CSS, JavaScript, و C++.</p>
+                    <div class="course-footer">
+                        <span class="course-price">متاح التسجيل</span>
+                        <a href="#contact" style="color: var(--primary-color); font-weight: bold;">سجل الآن <i class="fas fa-arrow-left"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="course-card">
+                <div class="course-img">
+                    <i class="fas fa-chart-pie"></i>
+                </div>
+                <div class="course-content">
+                    <h3>التحليل الإحصائي باستخدام SPSS</h3>
+                    <p>دورة متكاملة لتعلم كيفية تحليل البيانات والبحوث العلمية باستخدام برنامج SPSS باحترافية.</p>
+                    <div class="course-footer">
+                        <span class="course-price">متاح التسجيل</span>
+                        <a href="#contact" style="color: var(--primary-color); font-weight: bold;">سجل الآن <i class="fas fa-arrow-left"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="course-card">
+                <div class="course-img">
+                    <i class="fas fa-heartbeat"></i>
+                </div>
+                <div class="course-content">
+                    <h3>أساسيات الرعاية الصحية والتمريض</h3>
+                    <p>برنامج تدريبي متخصص يهدف لتطوير الكوادر الطبية ورفع كفاءة مهارات التمريض السريرية.</p>
+                    <div class="course-footer">
+                        <span class="course-price">قريباً</span>
+                        <a href="#contact" style="color: var(--text-light);">احجز مقعدك <i class="fas fa-arrow-left"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact section-padding" id="contact" style="background-color: var(--bg-light);">
+        <div class="section-title">
+            <h2>تواصل معنا وسجل الآن</h2>
+            <p>هل لديك استفسار أو ترغب في الانضمام لأحد برامجنا؟ يسعدنا تواصلك.</p>
+        </div>
+
+        <div class="contact-container">
+            <form id="contactForm">
+                <div class="form-group">
+                    <label for="name">الاسم الرباعي</label>
+                    <input type="text" id="name" class="form-control" placeholder="أدخل اسمك الكامل" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">رقم الهاتف / واتساب</label>
+                    <input type="tel" id="phone" class="form-control" placeholder="أدخل رقم الهاتف" required>
+                </div>
+                <div class="form-group">
+                    <label for="course">الدورة المطلوبة</label>
+                    <select id="course" class="form-control" required>
+                        <option value="" disabled selected>اختر الدورة...</option>
+                        <option value="web">تطوير تطبيقات الويب والموبايل</option>
+                        <option value="spss">التحليل الإحصائي SPSS</option>
+                        <option value="nursing">أساسيات الرعاية والتمريض</option>
+                        <option value="other">استفسار عام</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="message">رسالتك (اختياري)</label>
+                    <textarea id="message" class="form-control" placeholder="اكتب استفسارك هنا..."></textarea>
+                </div>
+                <button type="submit" class="btn-submit">إرسال طلب التسجيل</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h3>إيجابيون للتدريب</h3>
+                <p>مركز متخصص في تقديم برامج تدريبية تواكب متطلبات العصر الحديث، نهدف لصناعة كفاءات قادرة على قيادة المستقبل المهني.</p>
+            </div>
+            <div class="footer-col">
+                <h3>روابط سريعة</h3>
+                <ul style="line-height: 2;">
+                    <li><a href="#home">الرئيسية</a></li>
+                    <li><a href="#about">من نحن</a></li>
+                    <li><a href="#courses">دوراتنا</a></li>
+                    <li><a href="#contact">سياسة الخصوصية</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>معلومات التواصل</h3>
+                <p><i class="fas fa-map-marker-alt" style="margin-left: 10px;"></i> السودان - عطبرة</p>
+                <p><i class="fas fa-envelope" style="margin-left: 10px;"></i> info@ejabyoon.com</p>
+                <p><i class="fas fa-phone" style="margin-left: 10px;"></i> +249 123 456 789</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>جميع الحقوق محفوظة &copy; 2026 مركز إيجابيون للتدريب | تم التصميم بواسطة إدارة التقنية</p>
+        </div>
+    </footer>
+
+    <script>
+        // تفعيل قائمة الهاتف المحمول
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navLinks = document.getElementById('nav-links');
+
+        mobileMenu.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // إضافة تأثير الظل لشريط التنقل عند النزول للأسفل
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.1)';
+                header.style.padding = '10px 5%';
+            } else {
+                header.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+                header.style.padding = '15px 5%';
+            }
+        });
+
+        // رسالة تنبيه عند إرسال النموذج (للتجربة)
+        const contactForm = document.getElementById('contactForm');
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('تم استلام طلبك بنجاح! سيتواصل معك فريق مركز إيجابيون قريباً.');
+            this.reset();
+        });
+    </script>
+</body>
+</html>
