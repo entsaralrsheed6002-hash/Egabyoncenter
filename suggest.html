@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مركز إيجابيون | اقترح دورة تدريبية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* ================= المتغيرات ================= */
+        :root {
+            --primary-color: #1e3a8a;
+            --primary-light: #3b82f6;
+            --secondary-color: #f59e0b;
+            --heart-color: #ef4444; /* لون قلب التصويت */
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --bg-light: #f8fafc;
+            --white: #ffffff;
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* ================= التنسيق العام ================= */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
+        body { background-color: var(--bg-light); color: var(--text-dark); overflow-x: hidden; }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* ================= شريط التنقل ================= */
+        header {
+            background-color: var(--white); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            position: fixed; width: 100%; top: 0; z-index: 1000;
+        }
+        .nav-container {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 5%; max-width: 1400px; margin: 0 auto;
+        }
+        .logo { font-size: 28px; font-weight: 800; color: var(--primary-color); }
+        .logo span { color: var(--secondary-color); }
+        .nav-links { display: flex; gap: 20px; align-items: center;}
+        .nav-links a { font-weight: 600; transition: var(--transition); color: var(--text-dark); padding: 5px 10px; border-radius: 8px;}
+        .nav-links a:hover { color: var(--primary-color); background: rgba(30, 58, 138, 0.05); }
+        .nav-links a.active { color: var(--secondary-color); }
+
+        /* ================= الترويسة الفاخرة ================= */
+        .suggest-hero {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #172554 100%);
+            color: var(--white); padding: 150px 5% 80px; text-align: center; position: relative;
+            overflow: hidden;
+        }
+        /* دوائر مضيئة في الخلفية */
+        .suggest-hero::before, .suggest-hero::after {
+            content: ''; position: absolute; border-radius: 50%;
+            background: radial-gradient(circle, rgba(245, 158, 11, 0.2) 0%, transparent 70%);
+        }
+        .suggest-hero::before { width: 400px; height: 400px; top: -100px; right: -100px; }
+        .suggest-hero::after { width: 300px; height: 300px; bottom: -50px; left: -50px; }
+        
+        .hero-content { position: relative; z-index: 2; }
+        .hero-content h1 { font-size: 3.5rem; margin-bottom: 20px; text-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        .hero-content p { font-size: 1.2rem; color: #e2e8f0; max-width: 700px; margin: 0 auto; line-height: 1.8; }
+
+        /* ================= قسم التصويت (Trending Suggestions) ================= */
+        .voting-section { padding: 80px 5%; max-width: 1400px; margin: 0 auto; }
+        .section-header { text-align: center; margin-bottom: 50px; }
+        .section-header h2 { font-size: 2.2rem; color: var(--primary-color); margin-bottom: 15px; }
+        .section-header p { color: var(--text-light); font-size: 1.1rem; }
+
+        .voting-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
+
+        /* كارت التصويت */
+        .vote-card {
+            background: var(--white); border-radius: 20px; padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid #f1f5f9;
+            transition: var(--transition); position: relative;
+        }
+        .vote-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.08); border-color: var(--primary-light); }
+        
+        .card-icon {
+            width: 60px; height: 60px; background: rgba(59, 130, 246, 0.1); color: var(--primary-light);
+            border-radius: 15px; display: flex; align-items: center; justify-content: center;
+            font-size: 1.8rem; margin-bottom: 20px; transition: var(--transition);
+        }
+        .vote-card:hover .card-icon { background: var(--primary-light); color: var(--white); transform: rotate(10deg); }
+
+        .vote-title { font-size: 1.4rem; color: var(--text-dark); margin-bottom: 10px; font-weight: 800; }
+        .vote-desc { color: var(--text-light); font-size: 0.95rem; margin-bottom: 25px; line-height: 1.6; }
+
+        /* زر التصويت الفاخر */
+        .vote-action {
+            display: flex; justify-content: space-between; align-items: center;
+            border-top: 1px solid #f1f5f9; padding-top: 20px;
+        }
+        .vote-count { font-size: 1.2rem; font-weight: 800; color: var(--text-dark); display: flex; align-items: center; gap: 8px; }
+        .vote-count span { color: var(--text-light); font-size: 0.9rem; font-weight: 600; }
+
+        .btn-vote {
+            background: #fef2f2; color: var(--heart-color); border: 1px solid #fecaca;
+            padding: 10px 20px; border-radius: 50px; font-weight: 700; cursor: pointer;
+            transition: var(--transition); display: flex; align-items: center; gap: 8px; font-size: 1rem;
+        }
+        .btn-vote i { transition: transform 0.3s ease; }
+        .btn-vote:hover { background: var(--heart-color); color: var(--white); border-color: var(--heart-color); }
+        .btn-vote:hover i { transform: scale(1.2); }
+        
+        /* حالة تم التصويت */
+        .btn-vote.voted { background: var(--heart-color); color: var(--white); box-shadow: 0 5px 15px rgba(239, 68, 68, 0.3); }
+        .btn-vote.voted i { animation: pop 0.4s ease forwards; }
+        @keyframes pop { 50% { transform: scale(1.4); } 100% { transform: scale(1); } }
+
+        /* ================= قسم نموذج الاقتراح (Form) ================= */
+        .form-section { background: var(--white); padding: 80px 5%; border-top: 1px solid #e5e7eb; }
+        .form-container {
+            max-width: 900px; margin: 0 auto; background: var(--white);
+            border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.08); padding: 50px;
+            position: relative; overflow: hidden;
+        }
+        
+        /* شريط جانبي تجميلي للفورم */
+        .form-container::before {
+            content: ''; position: absolute; top: 0; right: 0; width: 8px; height: 100%;
+            background: linear-gradient(to bottom, var(--secondary-color), var(--primary-color));
+        }
+
+        .form-header { text-align: center; margin-bottom: 40px; }
+        .form-header i { font-size: 3rem; color: var(--secondary-color); margin-bottom: 15px; }
+        .form-header h3 { font-size: 2rem; color: var(--primary-color); }
+
+        .input-group { margin-bottom: 25px; position: relative; }
+        .input-label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--text-dark); }
+        
+        .input-field {
+            width: 100%; padding: 15px 20px; background: #f8fafc; border: 2px solid transparent;
+            border-radius: 10px; font-size: 1rem; color: var(--text-dark); transition: var(--transition); outline: none;
+        }
+        .input-field:focus { background: var(--white); border-color: var(--primary-light); box-shadow: 0 10px 20px rgba(59, 130, 246, 0.1); }
+        textarea.input-field { height: 120px; resize: none; }
+
+        /* زر الإرسال المتوهج */
+        .btn-submit {
+            width: 100%; padding: 18px; border: none; border-radius: 10px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            color: var(--white); font-size: 1.2rem; font-weight: 800; cursor: pointer;
+            transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 10px;
+            position: relative; overflow: hidden; box-shadow: 0 10px 20px rgba(30, 58, 138, 0.2);
+        }
+        .btn-submit::after {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: rgba(255,255,255,0.2); transform: rotate(45deg); opacity: 0; transition: var(--transition);
+        }
+        .btn-submit:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(30, 58, 138, 0.3); }
+        .btn-submit:hover::after { left: 100%; opacity: 1; transition: left 0.7s ease; }
+
+        /* رسالة النجاح المنبثقة (Toast) */
+        .toast {
+            position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%);
+            background: #10b981; color: var(--white); padding: 15px 30px; border-radius: 50px;
+            font-weight: 700; display: flex; align-items: center; gap: 10px;
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3); transition: bottom 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 2000;
+        }
+        .toast.show { bottom: 40px; }
+
+        /* ================= التذييل ================= */
+        footer { background-color: #111827; color: #9ca3af; text-align: center; padding: 25px; font-size: 0.9rem; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .form-container { padding: 30px 20px; }
+            .nav-links { display: none; }
+            .hero-content h1 { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo">إيجابيون <span>للتدريب</span></a>
+            <ul class="nav-links">
+                <li><a href="index.html">الرئيسية</a></li>
+                <li><a href="courses.html">الدورات</a></li>
+                <li><a href="instructors.html">المدربين</a></li>
+                <li><a href="suggest.html" class="active">ترشيح دورة</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <section class="suggest-hero">
+        <div class="hero-content">
+            <h1>شاركنا أفكارك، لنصنع مستقبلك</h1>
+            <p>في مركز إيجابيون للتدريب، نحن نصمم دوراتنا بناءً على احتياجاتك الفعلية. صوّت للدورات المفضلة لديك، أو اقترح دورة جديدة تود دراستها معنا في عطبرة.</p>
+        </div>
+    </section>
+
+    <section class="voting-section">
+        <div class="section-header">
+            <h2>دورات ينتظرها المتدربون</h2>
+            <p>اضغط على زر التصويت لتسريع إطلاق هذه الدورات ضمن خطتنا القادمة.</p>
+        </div>
+
+        <div class="voting-grid">
+            
+            <div class="vote-card">
+                <div class="card-icon"><i class="fas fa-robot"></i></div>
+                <h3 class="vote-title">أساسيات الذكاء الاصطناعي (AI)</h3>
+                <p class="vote-desc">دورة للتعرف على أدوات الذكاء الاصطناعي مثل ChatGPT وكيفية استخدامها لزيادة الإنتاجية في العمل والبحث العلمي.</p>
+                <div class="vote-action">
+                    <div class="vote-count"><span id="count1">145</span> <span>صوت</span></div>
+                    <button class="btn-vote" onclick="toggleVote(this, 'count1')">
+                        <i class="far fa-heart"></i> <span class="btn-text">صوّت الآن</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="vote-card">
+                <div class="card-icon"><i class="fas fa-chart-line"></i></div>
+                <h3 class="vote-title">التسويق الرقمي الاحترافي</h3>
+                <p class="vote-desc">إدارة الحملات الإعلانية على السوشيال ميديا، تحليل البيانات، وكيفية بناء علامة تجارية قوية للمشاريع الصغيرة.</p>
+                <div class="vote-action">
+                    <div class="vote-count"><span id="count2">89</span> <span>صوت</span></div>
+                    <button class="btn-vote" onclick="toggleVote(this, 'count2')">
+                        <i class="far fa-heart"></i> <span class="btn-text">صوّت الآن</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="vote-card">
+                <div class="card-icon"><i class="fas fa-project-diagram"></i></div>
+                <h3 class="vote-title">إدارة المشاريع (PMP)</h3>
+                <p class="vote-desc">تأهيل المتدربين لاجتياز امتحان شهادة إدارة المشاريع الاحترافية، وتطبيق منهجيات الإدارة الحديثة (Agile).</p>
+                <div class="vote-action">
+                    <div class="vote-count"><span id="count3">56</span> <span>صوت</span></div>
+                    <button class="btn-vote" onclick="toggleVote(this, 'count3')">
+                        <i class="far fa-heart"></i> <span class="btn-text">صوّت الآن</span>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="form-section">
+        <div class="form-container">
+            <div class="form-header">
+                <i class="far fa-lightbulb"></i>
+                <h3>لديك فكرة لدورة جديدة؟</h3>
+                <p style="color: var(--text-light); margin-top: 10px;">اكتب لنا تفاصيل الدورة التي تحتاجها وسنقوم بتوفير أفضل المدربين لها.</p>
+            </div>
+
+            <form id="suggestionForm">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                    <div class="input-group">
+                        <label class="input-label">اسمك (اختياري)</label>
+                        <input type="text" class="input-field" placeholder="أدخل اسمك">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">مجال الدورة المقترحة <span style="color: red;">*</span></label>
+                        <select class="input-field" required>
+                            <option value="" disabled selected>اختر المجال...</option>
+                            <option value="tech">برمجة وتقنية معلومات</option>
+                            <option value="health">طب ورعاية صحية</option>
+                            <option value="business">إدارة وتسويق</option>
+                            <option value="design">تصميم ومونتاج</option>
+                            <option value="other">مجال آخر</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">اسم الدورة المقترحة <span style="color: red;">*</span></label>
+                    <input type="text" class="input-field" placeholder="مثال: دورة متقدمة في لغة Python" required>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">لماذا تقترح هذه الدورة؟ وماذا تتوقع أن تتعلم فيها؟ <span style="color: red;">*</span></label>
+                    <textarea class="input-field" placeholder="اشرح لنا أهمية هذه الدورة وكيف ستفيد المتدربين وسوق العمل..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn-submit" id="submitBtn">
+                    <span class="btn-text">إرسال الاقتراح للإدارة</span>
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <div class="toast" id="toastMsg">
+        <i class="fas fa-check-circle"></i> تم تسجيل <span id="toastAction"></span> بنجاح! شكراً لمشاركتك.
+    </div>
+
+    <footer>
+        <p>جميع الحقوق محفوظة &copy; 2026 مركز إيجابيون للتدريب | قسم التطوير والجودة</p>
+    </footer>
+
+    <script>
+        const toast = document.getElementById('toastMsg');
+        const toastAction = document.getElementById('toastAction');
+
+        // 1. نظام التصويت التفاعلي (Like Button Logic)
+        function toggleVote(btn, counterId) {
+            const counterElement = document.getElementById(counterId);
+            let currentCount = parseInt(counterElement.innerText);
+            const icon = btn.querySelector('i');
+            const btnText = btn.querySelector('.btn-text');
+
+            if (btn.classList.contains('voted')) {
+                // إلغاء التصويت
+                btn.classList.remove('voted');
+                icon.classList.remove('fas');
+                icon.classList.add('far');
+                btnText.innerText = "صوّت الآن";
+                counterElement.innerText = currentCount - 1;
+            } else {
+                // تأكيد التصويت
+                btn.classList.add('voted');
+                icon.classList.remove('far');
+                icon.classList.add('fas');
+                btnText.innerText = "تم التصويت";
+                counterElement.innerText = currentCount + 1;
+                
+                // إظهار رسالة شكر سريعة
+                showToast("تصويتك");
+            }
+        }
+
+        // 2. تفاعل نموذج الاقتراح
+        const form = document.getElementById('suggestionForm');
+        const submitBtn = document.getElementById('submitBtn');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // تغيير الزر لحالة التحميل
+            const originalHtml = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري إرسال الاقتراح...';
+            submitBtn.style.opacity = '0.8';
+            
+            setTimeout(() => {
+                // إرجاع الزر وتفريغ الفورم
+                submitBtn.innerHTML = originalHtml;
+                submitBtn.style.opacity = '1';
+                form.reset();
+                
+                // إظهار رسالة النجاح
+                showToast("اقتراحك");
+            }, 1500);
+        });
+
+        // دالة عرض إشعار النجاح
+        function showToast(actionWord) {
+            toastAction.innerText = actionWord;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

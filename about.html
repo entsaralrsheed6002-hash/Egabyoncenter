@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مركز إيجابيون | عن المركز</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* ================= المتغيرات الأساسية (نفس هوية المركز) ================= */
+        :root {
+            --primary-color: #1e3a8a; /* أزرق داكن */
+            --secondary-color: #f59e0b; /* أصفر/ذهبي */
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --bg-light: #f3f4f6;
+            --white: #ffffff;
+            --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); /* حركة أنعم وأفخم */
+        }
+
+        /* ================= إعادة ضبط وتنسيق عام ================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            background-color: var(--white);
+            color: var(--text-dark);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* ================= شريط التنقل (مبسط للصفحة الفرعية) ================= */
+        header {
+            background-color: var(--white);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo { font-size: 28px; font-weight: 800; color: var(--primary-color); }
+        .logo span { color: var(--secondary-color); }
+
+        .nav-links { display: flex; gap: 25px; align-items: center;}
+        .nav-links a { font-weight: 600; transition: var(--transition); color: var(--text-dark); }
+        .nav-links a:hover { color: var(--secondary-color); }
+        
+        .nav-links a.active { color: var(--secondary-color); border-bottom: 2px solid var(--secondary-color); padding-bottom: 5px;}
+
+        .btn-back {
+            background-color: var(--bg-light);
+            color: var(--primary-color);
+            padding: 8px 20px;
+            border-radius: 5px;
+            font-weight: 700;
+            border: 1px solid #e5e7eb;
+            transition: var(--transition);
+        }
+        .btn-back:hover { background-color: var(--primary-color); color: var(--white); }
+
+        /* ================= ترويسة الصفحة (Page Header) ================= */
+        .page-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #1e40af 100%);
+            color: var(--white);
+            padding: 150px 5% 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* تأثير زخرفي في الخلفية */
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: -50px; left: -50px;
+            width: 200px; height: 200px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .breadcrumb {
+            color: rgba(255,255,255,0.8);
+            font-size: 1.1rem;
+            position: relative;
+            z-index: 2;
+        }
+        .breadcrumb a { color: var(--secondary-color); font-weight: bold;}
+
+        /* ================= العناوين العامة ================= */
+        .section-padding { padding: 90px 5%; }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            position: relative;
+            display: inline-block;
+        }
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            width: 40px; height: 4px;
+            background-color: var(--secondary-color);
+            bottom: -10px; left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        /* ================= قسم قصتنا (Story Section) ================= */
+        .story-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            max-width: 1200px;
+            margin: 0 auto;
+            align-items: center;
+        }
+
+        .story-text h3 {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        
+        .story-text p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+
+        .story-image {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .story-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+        
+        .story-image:hover img { transform: scale(1.05); }
+
+        /* ================= الرؤية والرسالة والأهداف (Cards) ================= */
+        .vmg-section { background-color: var(--bg-light); }
+        
+        .vmg-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .vmg-card {
+            background: var(--white);
+            padding: 40px 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: var(--transition);
+            border-bottom: 4px solid transparent;
+            /* للتحريك عند النزول */
+            opacity: 0;
+            transform: translateY(30px); 
+        }
+
+        .vmg-card.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .vmg-card:hover {
+            transform: translateY(-10px);
+            border-bottom-color: var(--secondary-color);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+        }
+
+        .vmg-icon {
+            width: 80px; height: 80px;
+            background: rgba(30, 58, 138, 0.05);
+            color: var(--primary-color);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2.5rem;
+            margin: 0 auto 25px;
+            transition: var(--transition);
+        }
+        
+        .vmg-card:hover .vmg-icon {
+            background: var(--primary-color);
+            color: var(--white);
+        }
+
+        .vmg-card h3 { font-size: 1.5rem; margin-bottom: 15px; color: var(--text-dark); }
+        .vmg-card p { color: var(--text-light); }
+
+        /* ================= إحصائيات متحركة (Counter Section) ================= */
+        .stats-section {
+            background: var(--primary-color);
+            color: var(--white);
+            padding: 60px 5%;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .stat-item h4 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+        }
+        
+        .stat-item p { font-size: 1.2rem; font-weight: 600; }
+
+        /* ================= التذييل (مختصر) ================= */
+        footer {
+            background-color: #111827;
+            color: #9ca3af;
+            text-align: center;
+            padding: 25px;
+            font-size: 0.9rem;
+        }
+
+        /* ================= استجابة الشاشات (Mobile) ================= */
+        @media (max-width: 768px) {
+            .story-container { grid-template-columns: 1fr; }
+            .story-text { order: 2; text-align: center; }
+            .story-image { order: 1; }
+            .page-header h1 { font-size: 2.2rem; }
+            .nav-links { display: none; } /* يمكن إضافة قائمة همبرغر هنا لاحقاً */
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo">إيجابيون <span>للتدريب</span></a>
+            <ul class="nav-links">
+                <li><a href="index.html">الرئيسية</a></li>
+                <li><a href="about.html" class="active">عن المركز</a></li>
+                <li><a href="index.html#courses">الدورات</a></li>
+            </ul>
+            <a href="index.html" class="btn-back"><i class="fas fa-arrow-right"></i> العودة للرئيسية</a>
+        </div>
+    </header>
+
+    <div class="page-header">
+        <h1>من نحن</h1>
+        <div class="breadcrumb">
+            <a href="index.html">الرئيسية</a> / عن المركز
+        </div>
+    </div>
+
+    <section class="section-padding">
+        <div class="story-container">
+            <div class="story-text">
+                <h3>بداية فكرة مركز إيجابيون</h3>
+                <p>تأسس مركز <strong>إيجابيون للتدريب</strong> في مدينة عطبرة بهدف سد الفجوة بين التعليم الأكاديمي ومتطلبات سوق العمل المتسارعة. نحن نؤمن بأن التدريب العملي والموجه هو المفتاح الحقيقي لنجاح أي مسيرة مهنية.</p>
+                <p>بدأنا كفكرة طموحة لنشر المعرفة في مجالات التقنية (مثل تطوير الويب والبرمجة)، والتحليل الإحصائي (SPSS)، وتطوير كوادر الرعاية الصحية، واليوم نحن نسعى لنكون المنصة الأولى التي يلجأ إليها الشباب لبناء مستقبلهم.</p>
+            </div>
+            <div class="story-image">
+                <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="تدريب وتطوير">
+            </div>
+        </div>
+    </section>
+
+    <section class="vmg-section section-padding">
+        <div class="section-title">
+            <h2>هويتنا المؤسسية</h2>
+        </div>
+        <div class="vmg-grid">
+            
+            <div class="vmg-card">
+                <div class="vmg-icon"><i class="fas fa-eye"></i></div>
+                <h3>رؤيتنا</h3>
+                <p>أن نكون المركز الرائد والأكثر ابتكاراً في تقديم الحلول التدريبية المتكاملة في السودان، وصناعة جيل من المحترفين القادرين على المنافسة عالمياً.</p>
+            </div>
+
+            <div class="vmg-card">
+                <div class="vmg-icon"><i class="fas fa-bullseye"></i></div>
+                <h3>رسالتنا</h3>
+                <p>تقديم برامج تدريبية عالية الجودة تعتمد على التطبيق العملي، من خلال نخبة من المدربين الخبراء، وفي بيئة تعليمية محفزة تدعم الإبداع والتطور المستمر.</p>
+            </div>
+
+            <div class="vmg-card">
+                <div class="vmg-icon"><i class="fas fa-chart-line"></i></div>
+                <h3>أهدافنا</h3>
+                <p>تأهيل المتدربين لسوق العمل بمهارات حقيقية، تقديم استشارات متخصصة، وبناء شراكات استراتيجية مع المؤسسات التعليمية والمهنية.</p>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="stats-section">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <h4 class="counter" data-target="15">0</h4>
+                <p>برنامج تدريبي</p>
+            </div>
+            <div class="stat-item">
+                <h4 class="counter" data-target="500">0</h4>
+                <p>متدرب خريج</p>
+            </div>
+            <div class="stat-item">
+                <h4 class="counter" data-target="12">0</h4>
+                <p>مدرب معتمد</p>
+            </div>
+            <div class="stat-item">
+                <h4 class="counter" data-target="5">0</h4>
+                <p>شراكات استراتيجية</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>جميع الحقوق محفوظة &copy; 2026 مركز إيجابيون للتدريب</p>
+    </footer>
+
+    <script>
+        // 1. حركة ظهور الكروت عند النزول (Scroll Animation)
+        const cards = document.querySelectorAll('.vmg-card');
+        
+        const observerOptions = {
+            threshold: 0.2, // تظهر لما 20% من الكرت يكون في الشاشة
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // إضافة كلاس يظهر الكرت
+                    entry.target.classList.add('show');
+                    // عشان الكروت تظهر ورا بعض بتأخير بسيط
+                    entry.target.style.transitionDelay = `${Array.from(cards).indexOf(entry.target) * 0.2}s`;
+                    observer.unobserve(entry.target); // إيقاف المراقبة بعد الظهور الأول
+                }
+            });
+        }, observerOptions);
+
+        cards.forEach(card => observer.observe(card));
+
+        // 2. حركة عداد الأرقام (Counter Animation)
+        const counters = document.querySelectorAll('.counter');
+        const speed = 200; // سرعة العداد
+
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const counter = entry.target;
+                    const updateCount = () => {
+                        const target = +counter.getAttribute('data-target');
+                        const count = +counter.innerText;
+                        const inc = target / speed;
+
+                        if (count < target) {
+                            counter.innerText = Math.ceil(count + inc);
+                            setTimeout(updateCount, 15);
+                        } else {
+                            counter.innerText = target;
+                            if(target > 100) counter.innerText += "+"; // إضافة علامة + للأرقام الكبيرة
+                        }
+                    };
+                    updateCount();
+                    counterObserver.unobserve(counter);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        counters.forEach(counter => counterObserver.observe(counter));
+    </script>
+</body>
+</html>

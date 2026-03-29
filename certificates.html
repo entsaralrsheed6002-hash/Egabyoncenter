@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مركز إيجابيون | بوابة الشهادات</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* ================= المتغيرات ================= */
+        :root {
+            --primary-color: #1e3a8a;
+            --primary-light: #3b82f6;
+            --secondary-color: #f59e0b;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --bg-light: #f3f4f6;
+            --white: #ffffff;
+            --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        /* ================= التنسيق العام ================= */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
+        body { background-color: var(--bg-light); color: var(--text-dark); overflow-x: hidden; }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* ================= شريط التنقل ================= */
+        header {
+            background-color: var(--white); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            position: fixed; width: 100%; top: 0; z-index: 1000;
+        }
+        .nav-container {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 5%; max-width: 1400px; margin: 0 auto;
+        }
+        .logo { font-size: 28px; font-weight: 800; color: var(--primary-color); }
+        .logo span { color: var(--secondary-color); }
+        .nav-links { display: flex; gap: 20px; align-items: center;}
+        .nav-links a { font-weight: 600; transition: var(--transition); color: var(--text-dark); padding: 5px 10px;}
+        .nav-links a:hover, .nav-links a.active { color: var(--primary-color); background: rgba(30, 58, 138, 0.05); border-radius: 8px;}
+
+        /* ================= الترويسة ================= */
+        .page-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #1e40af 100%);
+            color: var(--white); padding: 140px 5% 60px; text-align: center;
+        }
+        .page-header h1 { font-size: 3rem; margin-bottom: 15px; }
+        .page-header p { font-size: 1.1rem; color: #d1d5db; max-width: 700px; margin: 0 auto; }
+
+        /* ================= محرك البحث الفاخر ================= */
+        .search-container {
+            max-width: 800px; margin: -35px auto 40px; position: relative; z-index: 10; padding: 0 5%;
+        }
+        .search-box {
+            display: flex; align-items: center; background: var(--white);
+            border-radius: 50px; padding: 10px 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 2px solid transparent; transition: var(--transition);
+        }
+        .search-box:focus-within { border-color: var(--primary-light); box-shadow: 0 15px 40px rgba(59, 130, 246, 0.2); }
+        .search-box i { font-size: 1.5rem; color: var(--primary-color); margin-left: 15px; }
+        .search-input {
+            flex: 1; border: none; outline: none; padding: 15px 0;
+            font-size: 1.1rem; color: var(--text-dark); background: transparent;
+        }
+
+        /* ================= شبكة الشهادات (Data Grid) ================= */
+        .certificates-section { padding: 20px 5% 80px; max-width: 1400px; margin: 0 auto; }
+        .cert-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 30px;
+        }
+
+        /* كارت الشهادة */
+        .cert-card {
+            background: var(--white); border-radius: 15px; padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05); border-top: 5px solid var(--primary-color);
+            transition: var(--transition); position: relative; overflow: hidden;
+            display: flex; flex-direction: column; justify-content: space-between;
+        }
+        .cert-card:hover { transform: translateY(-8px); box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
+        
+        /* العلامة المائية في الخلفية */
+        .cert-card::before {
+            content: '\f0a3'; font-family: 'Font Awesome 6 Free'; font-weight: 900;
+            position: absolute; font-size: 8rem; color: rgba(30, 58, 138, 0.03);
+            bottom: -20px; left: -20px; z-index: 0; transform: rotate(-15deg);
+        }
+
+        .cert-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; position: relative; z-index: 1; }
+        .cert-id { background: var(--bg-light); color: var(--text-light); padding: 5px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; letter-spacing: 1px;}
+        
+        /* حالات الشهادة */
+        .status { padding: 5px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; display: flex; align-items: center; gap: 5px;}
+        .status.ready { background: rgba(16, 185, 129, 0.1); color: var(--success-color); }
+        .status.pending { background: rgba(245, 158, 11, 0.1); color: var(--warning-color); }
+        .status.delivered { background: rgba(107, 114, 128, 0.1); color: var(--text-light); }
+
+        .cert-body { margin-bottom: 25px; position: relative; z-index: 1; border-bottom: 1px dashed #e5e7eb; padding-bottom: 15px;}
+        .student-name { font-size: 1.4rem; color: var(--primary-color); margin-bottom: 8px; font-weight: 800; }
+        .course-name { color: var(--text-dark); font-weight: 600; margin-bottom: 5px; font-size: 1rem;}
+        .cert-date { color: var(--text-light); font-size: 0.9rem; display: flex; align-items: center; gap: 8px; margin-top: 10px;}
+
+        /* الأزرار الفاخرة للشهادة */
+        .cert-actions { display: flex; gap: 10px; position: relative; z-index: 1; }
+        .btn-action {
+            flex: 1; padding: 12px; border: none; border-radius: 8px; cursor: pointer;
+            font-weight: 700; font-size: 0.95rem; display: flex; justify-content: center; align-items: center; gap: 8px;
+            transition: var(--transition);
+        }
+        
+        .btn-view { background: var(--bg-light); color: var(--primary-color); }
+        .btn-view:hover { background: var(--primary-color); color: var(--white); }
+        
+        .btn-download {
+            background: linear-gradient(135deg, var(--secondary-color), #d97706);
+            color: var(--white); position: relative; overflow: hidden;
+        }
+        /* تأثير الإضاءة للزر */
+        .btn-download::after {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: rgba(255,255,255,0.2); transform: rotate(45deg); transition: var(--transition);
+            opacity: 0;
+        }
+        .btn-download:hover::after { left: 100%; opacity: 1; transition: left 0.6s ease; }
+        .btn-download:hover { box-shadow: 0 5px 15px rgba(245, 158, 11, 0.4); transform: translateY(-2px);}
+        .btn-download:disabled { background: #d1d5db; color: #9ca3af; cursor: not-allowed; box-shadow: none; transform: none;}
+
+        /* رسالة عدم وجود نتائج */
+        .no-results { grid-column: 1 / -1; text-align: center; padding: 50px; display: none; }
+        .no-results i { font-size: 4rem; color: #d1d5db; margin-bottom: 20px; }
+        .no-results p { font-size: 1.2rem; color: var(--text-light); }
+
+        /* ================= النافذة المنبثقة (Modal) لمعاينة الشهادة ================= */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(5px);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 2000; opacity: 0; visibility: hidden; transition: var(--transition);
+        }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        
+        .modal-content {
+            background: var(--white); width: 90%; max-width: 600px; border-radius: 20px;
+            padding: 40px; position: relative; transform: scale(0.8); transition: var(--transition);
+            text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+            border: 8px solid var(--bg-light);
+        }
+        .modal-overlay.active .modal-content { transform: scale(1); }
+        
+        .close-modal {
+            position: absolute; top: 15px; left: 15px; background: #fef2f2; color: var(--danger-color);
+            width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; font-size: 1.2rem; transition: var(--transition); border: none;
+        }
+        .close-modal:hover { background: var(--danger-color); color: var(--white); transform: rotate(90deg);}
+
+        .modal-cert-icon { font-size: 5rem; color: var(--secondary-color); margin-bottom: 20px; }
+        .modal-title { font-size: 2rem; color: var(--primary-color); margin-bottom: 10px; }
+        .modal-desc { color: var(--text-dark); font-size: 1.2rem; margin-bottom: 30px; line-height: 1.8;}
+        
+        /* ================= التذييل ================= */
+        footer { background-color: #111827; color: #9ca3af; text-align: center; padding: 25px; font-size: 0.9rem; }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .cert-actions { flex-direction: column; }
+            .modal-content { padding: 30px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo">إيجابيون <span>للتدريب</span></a>
+            <ul class="nav-links">
+                <li><a href="index.html">الرئيسية</a></li>
+                <li><a href="courses.html">الدورات</a></li>
+                <li><a href="contact.html">تواصل معنا</a></li>
+                <li><a href="certificates.html" class="active">بوابة الشهادات</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <div class="page-header">
+        <h1>التحقق واستلام الشهادات</h1>
+        <p>أدخل اسمك أو رقم الشهادة للتحقق من حالة إصدارها، يمكنك تحميل نسختك الرقمية أو معرفة موعد استلام النسخة الورقية من مقر المركز في عطبرة.</p>
+    </div>
+
+    <div class="search-container">
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchInput" class="search-input" placeholder="ابحث بالاسم الرباعي أو رقم الشهادة (مثال: EJ-2026-001)...">
+        </div>
+    </div>
+
+    <section class="certificates-section">
+        <div class="cert-grid" id="certGrid">
+            
+            <div class="cert-card" data-name="أحمد محمد علي" data-id="EJ-2026-001">
+                <div class="cert-header">
+                    <span class="cert-id"><i class="fas fa-barcode"></i> EJ-2026-001</span>
+                    <span class="status ready"><i class="fas fa-check-circle"></i> جاهزة للاستلام</span>
+                </div>
+                <div class="cert-body">
+                    <h3 class="student-name">أحمد محمد علي</h3>
+                    <p class="course-name"><i class="fas fa-laptop-code" style="color: var(--primary-light);"></i> التطوير الشامل لتطبيقات الويب</p>
+                    <p class="cert-date"><i class="far fa-calendar-alt"></i> تاريخ الإصدار: 25 مارس 2026</p>
+                </div>
+                <div class="cert-actions">
+                    <button class="btn-action btn-view" onclick="openModal('أحمد محمد علي', 'التطوير الشامل لتطبيقات الويب', 'EJ-2026-001')"><i class="fas fa-eye"></i> معاينة</button>
+                    <button class="btn-action btn-download"><i class="fas fa-download"></i> تحميل PDF</button>
+                </div>
+            </div>
+
+            <div class="cert-card" data-name="الرشيد كمال" data-id="EJ-2026-002">
+                <div class="cert-header">
+                    <span class="cert-id"><i class="fas fa-barcode"></i> EJ-2026-002</span>
+                    <span class="status ready"><i class="fas fa-check-circle"></i> جاهزة للاستلام</span>
+                </div>
+                <div class="cert-body">
+                    <h3 class="student-name">الرشيد كمال</h3>
+                    <p class="course-name"><i class="fas fa-chart-pie" style="color: var(--primary-light);"></i> التحليل الإحصائي المتقدم (SPSS)</p>
+                    <p class="cert-date"><i class="far fa-calendar-alt"></i> تاريخ الإصدار: 28 مارس 2026</p>
+                </div>
+                <div class="cert-actions">
+                    <button class="btn-action btn-view" onclick="openModal('الرشيد كمال', 'التحليل الإحصائي المتقدم (SPSS)', 'EJ-2026-002')"><i class="fas fa-eye"></i> معاينة</button>
+                    <button class="btn-action btn-download"><i class="fas fa-download"></i> تحميل PDF</button>
+                </div>
+            </div>
+
+            <div class="cert-card" data-name="فاطمة حسن عبد الرحمن" data-id="EJ-2026-003">
+                <div class="cert-header">
+                    <span class="cert-id"><i class="fas fa-barcode"></i> EJ-2026-003</span>
+                    <span class="status pending"><i class="fas fa-spinner fa-spin"></i> قيد التجهيز</span>
+                </div>
+                <div class="cert-body">
+                    <h3 class="student-name">فاطمة حسن عبد الرحمن</h3>
+                    <p class="course-name"><i class="fas fa-user-nurse" style="color: var(--primary-light);"></i> أساسيات التمريض والرعاية السريرية</p>
+                    <p class="cert-date"><i class="far fa-clock"></i> المتوقع: 5 أبريل 2026</p>
+                </div>
+                <div class="cert-actions">
+                    <button class="btn-action btn-view" onclick="openModal('فاطمة حسن عبد الرحمن', 'أساسيات التمريض والرعاية السريرية', 'EJ-2026-003')"><i class="fas fa-eye"></i> التفاصيل</button>
+                    <button class="btn-action btn-download" disabled><i class="fas fa-lock"></i> غير متاحة</button>
+                </div>
+            </div>
+
+            <div class="cert-card" data-name="عمر خالد مصطفى" data-id="EJ-2026-004">
+                <div class="cert-header">
+                    <span class="cert-id"><i class="fas fa-barcode"></i> EJ-2026-004</span>
+                    <span class="status delivered"><i class="fas fa-box-open"></i> تم التسليم</span>
+                </div>
+                <div class="cert-body">
+                    <h3 class="student-name">عمر خالد مصطفى</h3>
+                    <p class="course-name"><i class="fas fa-desktop" style="color: var(--primary-light);"></i> برمجة تطبيقات سطح المكتب VB.NET</p>
+                    <p class="cert-date"><i class="fas fa-check"></i> استلمت ورقياً بتاريخ: 15 مارس 2026</p>
+                </div>
+                <div class="cert-actions">
+                    <button class="btn-action btn-view" onclick="openModal('عمر خالد مصطفى', 'برمجة تطبيقات سطح المكتب VB.NET', 'EJ-2026-004')"><i class="fas fa-eye"></i> معاينة</button>
+                    <button class="btn-action btn-download"><i class="fas fa-download"></i> نسخة بدل فاقد</button>
+                </div>
+            </div>
+
+            <div class="no-results" id="noResults">
+                <i class="fas fa-search-minus"></i>
+                <p>عفواً، لا توجد شهادة مطابقة لبيانات البحث.<br>يرجى التأكد من كتابة الاسم أو الرقم بشكل صحيح.</p>
+            </div>
+
+        </div>
+    </section>
+
+    <div class="modal-overlay" id="certModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal()"><i class="fas fa-times"></i></button>
+            <i class="fas fa-award modal-cert-icon"></i>
+            <h2 class="modal-title">إفادة اجتياز دورة</h2>
+            <p class="modal-desc">
+                يشهد <strong>مركز إيجابيون للتدريب</strong> بأن المتدرب/ة:<br>
+                <strong id="modalName" style="color: var(--primary-color); font-size: 1.5rem; display: block; margin: 10px 0;"></strong>
+                قد اجتاز بنجاح المتطلبات الأكاديمية والعملية للبرنامج التدريبي:<br>
+                <strong id="modalCourse" style="color: var(--secondary-color);"></strong>
+            </p>
+            <div style="background: var(--bg-light); padding: 15px; border-radius: 10px; font-weight: bold; color: var(--text-light);">
+                رقم التوثيق: <span id="modalId"></span>
+            </div>
+            <button class="btn-action btn-download" style="width: 100%; margin-top: 20px; padding: 15px;" onclick="alert('جاري تجهيز الشهادة للطباعة عالية الدقة...')">
+                <i class="fas fa-print"></i> طباعة الشهادة الآن
+            </button>
+        </div>
+    </div>
+
+    <footer>
+        <p>جميع الحقوق محفوظة &copy; 2026 مركز إيجابيون للتدريب | إدارة شؤون المتدربين</p>
+    </footer>
+
+    <script>
+        // 1. نظام البحث المباشر (Live Search)
+        const searchInput = document.getElementById('searchInput');
+        const certCards = document.querySelectorAll('.cert-card');
+        const noResults = document.getElementById('noResults');
+
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase().trim();
+            let hasResults = false;
+
+            certCards.forEach(card => {
+                const name = card.getAttribute('data-name').toLowerCase();
+                const id = card.getAttribute('data-id').toLowerCase();
+
+                if (name.includes(searchTerm) || id.includes(searchTerm)) {
+                    card.style.display = 'flex';
+                    hasResults = true;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            if (!hasResults) {
+                noResults.style.display = 'block';
+            } else {
+                noResults.style.display = 'none';
+            }
+        });
+
+        // 2. التحكم في النافذة المنبثقة (Modal)
+        const modal = document.getElementById('certModal');
+        const modalName = document.getElementById('modalName');
+        const modalCourse = document.getElementById('modalCourse');
+        const modalId = document.getElementById('modalId');
+
+        function openModal(name, course, id) {
+            modalName.textContent = name;
+            modalCourse.textContent = course;
+            modalId.textContent = id;
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+        }
+
+        // إغلاق النافذة عند الضغط خارجها
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>

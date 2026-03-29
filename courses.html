@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مركز إيجابيون | الدورات التدريبية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* ================= المتغيرات الأساسية ================= */
+        :root {
+            --primary-color: #1e3a8a; 
+            --secondary-color: #f59e0b; 
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --bg-light: #f9fafb;
+            --white: #ffffff;
+            --transition: all 0.4s ease;
+        }
+
+        /* ================= إعادة ضبط وتنسيق عام ================= */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
+        body { background-color: var(--bg-light); color: var(--text-dark); overflow-x: hidden; }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* ================= شريط التنقل (Navbar) ================= */
+        header {
+            background-color: var(--white);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+            position: fixed; width: 100%; top: 0; z-index: 1000;
+        }
+        .nav-container {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 5%; max-width: 1400px; margin: 0 auto;
+        }
+        .logo { font-size: 28px; font-weight: 800; color: var(--primary-color); }
+        .logo span { color: var(--secondary-color); }
+        .nav-links { display: flex; gap: 25px; align-items: center;}
+        .nav-links a { font-weight: 600; transition: var(--transition); color: var(--text-dark); }
+        .nav-links a:hover { color: var(--secondary-color); }
+        .nav-links a.active { color: var(--secondary-color); border-bottom: 2px solid var(--secondary-color); padding-bottom: 5px;}
+
+        /* ================= ترويسة الصفحة (Header) ================= */
+        .page-header {
+            background: linear-gradient(rgba(30, 58, 138, 0.9), rgba(30, 58, 138, 0.9)), url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover;
+            color: var(--white);
+            padding: 160px 5% 100px;
+            text-align: center;
+        }
+        .page-header h1 { font-size: 3.5rem; margin-bottom: 15px; }
+        .page-header p { font-size: 1.2rem; color: #d1d5db; max-width: 600px; margin: 0 auto; }
+
+        /* ================= أزرار الفلترة (Filter Buttons) ================= */
+        .filter-container {
+            display: flex; justify-content: center; flex-wrap: wrap; gap: 15px;
+            margin: -30px auto 50px; position: relative; z-index: 10;
+        }
+        .filter-btn {
+            background-color: var(--white); color: var(--text-dark);
+            border: 2px solid #e5e7eb; padding: 10px 25px;
+            border-radius: 30px; font-size: 1.1rem; font-weight: 600;
+            cursor: pointer; transition: var(--transition); box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .filter-btn:hover, .filter-btn.active {
+            background-color: var(--primary-color); color: var(--white); border-color: var(--primary-color);
+        }
+
+        /* ================= شبكة الدورات (Courses Grid) ================= */
+        .courses-section { padding: 40px 5% 90px; max-width: 1400px; margin: 0 auto; }
+        .courses-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px;
+        }
+
+        /* كارت الدورة الاحترافي */
+        .course-card {
+            background: var(--white); border-radius: 15px; overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05); transition: var(--transition);
+            position: relative; border: 1px solid #f3f4f6;
+            display: none; /* مخفي افتراضياً للفلترة */
+        }
+        .course-card.show { display: block; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+
+        .course-card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.15); }
+
+        .course-badge {
+            position: absolute; top: 15px; right: 15px;
+            background: var(--secondary-color); color: var(--text-dark);
+            padding: 5px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; z-index: 2;
+        }
+
+        .course-img {
+            height: 220px; width: 100%; position: relative; overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
+            background: #e5e7eb; font-size: 4rem; color: var(--primary-color);
+        }
+        .course-img::after {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.4));
+        }
+
+        .course-content { padding: 25px; }
+        .course-category {
+            color: var(--primary-color); font-size: 0.9rem; font-weight: 700; margin-bottom: 10px; display: block;
+        }
+        .course-title { font-size: 1.4rem; margin-bottom: 15px; color: var(--text-dark); line-height: 1.4; }
+        .course-desc { color: var(--text-light); font-size: 0.95rem; margin-bottom: 20px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+
+        .course-meta {
+            display: flex; justify-content: space-between; border-top: 1px solid #f3f4f6;
+            padding-top: 15px; margin-bottom: 20px; color: var(--text-light); font-size: 0.9rem;
+        }
+        .course-meta span i { color: var(--secondary-color); margin-left: 5px; }
+
+        .btn-enroll {
+            display: block; width: 100%; text-align: center;
+            background: var(--bg-light); color: var(--primary-color);
+            padding: 12px; border-radius: 8px; font-weight: 700; border: 1px solid var(--primary-color);
+            transition: var(--transition);
+        }
+        .btn-enroll:hover { background: var(--primary-color); color: var(--white); }
+
+        /* ================= رسالة عدم وجود نتائج ================= */
+        .no-results {
+            grid-column: 1 / -1; text-align: center; padding: 50px;
+            font-size: 1.5rem; color: var(--text-light); display: none;
+        }
+
+        /* ================= التذييل ================= */
+        footer { background-color: #111827; color: #9ca3af; text-align: center; padding: 25px; font-size: 0.9rem; margin-top: 50px;}
+
+        /* استجابة الشاشات */
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .page-header h1 { font-size: 2.5rem; }
+            .filter-container { padding: 0 15px; }
+            .filter-btn { font-size: 0.9rem; padding: 8px 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo">إيجابيون <span>للتدريب</span></a>
+            <ul class="nav-links">
+                <li><a href="index.html">الرئيسية</a></li>
+                <li><a href="about.html">عن المركز</a></li>
+                <li><a href="courses.html" class="active">الدورات التدريبية</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <div class="page-header">
+        <h1>برامجنا التدريبية</h1>
+        <p>استثمر في مستقبلك من خلال مجموعة مختارة من الدورات العملية والمهنية المصممة لتلبية احتياجات سوق العمل الحقيقي.</p>
+    </div>
+
+    <div class="filter-container" id="filter-btns">
+        <button class="filter-btn active" data-filter="all">عرض الكل</button>
+        <button class="filter-btn" data-filter="programming">برمجة وتطوير</button>
+        <button class="filter-btn" data-filter="data">تحليل بيانات</button>
+        <button class="filter-btn" data-filter="health">القطاع الصحي</button>
+        <button class="filter-btn" data-filter="academic">بحث علمي ومشاريع</button>
+    </div>
+
+    <section class="courses-section">
+        <div class="courses-grid" id="courses-grid">
+            
+            <div class="course-card show" data-category="programming">
+                <span class="course-badge">الأكثر طلباً</span>
+                <div class="course-img"><i class="fab fa-html5"></i></div>
+                <div class="course-content">
+                    <span class="course-category">برمجة وتطوير</span>
+                    <h3 class="course-title">التطوير الشامل لتطبيقات الويب والموبايل</h3>
+                    <p class="course-desc">تعلم بناء تطبيقات متكاملة ومواقع إلكترونية من الصفر باستخدام تقنيات HTML, CSS, و JavaScript، وتأهيلك للعمل كمطور واجهات محترف.</p>
+                    <div class="course-meta">
+                        <span><i class="far fa-clock"></i> 6 أسابيع</span>
+                        <span><i class="fas fa-user-graduate"></i> شهادة معتمدة</span>
+                    </div>
+                    <a href="index.html#contact" class="btn-enroll">سجل الآن</a>
+                </div>
+            </div>
+
+            <div class="course-card show" data-category="programming">
+                <div class="course-img"><i class="fas fa-desktop"></i></div>
+                <div class="course-content">
+                    <span class="course-category">برمجة وتطوير</span>
+                    <h3 class="course-title">برمجة تطبيقات سطح المكتب (VB.NET)</h3>
+                    <p class="course-desc">دورة عملية متخصصة في تصميم وبناء أنظمة الإدارة والمخازن باستخدام بيئة Visual Studio ولغة VB.NET لإنتاج برامج قوية للشركات.</p>
+                    <div class="course-meta">
+                        <span><i class="far fa-clock"></i> 4 أسابيع</span>
+                        <span><i class="fas fa-cogs"></i> مشاريع عملية</span>
+                    </div>
+                    <a href="index.html#contact" class="btn-enroll">سجل الآن</a>
+                </div>
+            </div>
+
+            <div class="course-card show" data-category="data">
+                <span class="course-badge">متاح التسجيل</span>
+                <div class="course-img"><i class="fas fa-chart-pie"></i></div>
+                <div class="course-content">
+                    <span class="course-category">تحليل بيانات</span>
+                    <h3 class="course-title">التحليل الإحصائي المتقدم (SPSS)</h3>
+                    <p class="course-desc">إتقان برنامج SPSS الإحصائي لتحليل البيانات المعقدة، مصمم خصيصاً للباحثين، الأكاديميين، وطلاب الدراسات العليا لإنهاء أبحاثهم بدقة.</p>
+                    <div class="course-meta">
+                        <span><i class="far fa-clock"></i> 3 أسابيع</span>
+                        <span><i class="fas fa-laptop"></i> تطبيق مباشر</span>
+                    </div>
+                    <a href="index.html#contact" class="btn-enroll">سجل الآن</a>
+                </div>
+            </div>
+
+            <div class="course-card show" data-category="health">
+                <span class="course-badge" style="background: #ef4444; color: white;">تبدأ قريباً</span>
+                <div class="course-img"><i class="fas fa-user-nurse" style="color: #ef4444;"></i></div>
+                <div class="course-content">
+                    <span class="course-category">القطاع الصحي</span>
+                    <h3 class="course-title">تطوير مهارات التمريض والرعاية الصحية</h3>
+                    <p class="course-desc">برنامج تدريبي لرفع كفاءة الكوادر الطبية والممرضين، يشمل التعامل مع الحالات الطارئة، أساسيات الرعاية السريرية، وإدارة شبكات التمريض.</p>
+                    <div class="course-meta">
+                        <span><i class="far fa-clock"></i> 5 أسابيع</span>
+                        <span><i class="fas fa-hospital"></i> تدريب سريري</span>
+                    </div>
+                    <a href="index.html#contact" class="btn-enroll">احجز مقعدك</a>
+                </div>
+            </div>
+
+            <div class="course-card show" data-category="programming">
+                <div class="course-img"><i class="fas fa-microchip"></i></div>
+                <div class="course-content">
+                    <span class="course-category">برمجة وتطوير</span>
+                    <h3 class="course-title">البرمجة عالية الأداء (C++)</h3>
+                    <p class="course-desc">تعلم أساسيات وهياكل البيانات باستخدام لغة C++ القوية، لتأهيلك لكتابة أكواد سريعة والتعامل مع موارد النظام بكفاءة عالية.</p>
+                    <div class="course-meta">
+                        <span><i class="far fa-clock"></i> 6 أسابيع</span>
+                        <span><i class="fas fa-code"></i> مستوى متقدم</span>
+                    </div>
+                    <a href="index.html#contact" class="btn-enroll">سجل الآن</a>
+                </div>
+            </div>
+
+            <div class="course-card show" data-category="academic">
+                <span class="course-badge">مميز</span>
+                <div class="course-img"><i class="fas fa-graduation-cap"></i></div>
+                <div class="course-content">
+                    <span class="course-category">بحث علمي ومشاريع</span>
+                    <h3 class="course-title">إعداد وتصميم مشاريع التخرج</h3>
+                    <p class="course-desc">ورشة عمل متكاملة لمساعدة طلاب الجامعات في كتابة الأوراق البحثية، تصميم الملصقات العلمية (Posters)، وتجهيز عرض المناقشة النهائي.</p>
+                    <div class="course-meta">
+                        <span><i class="far fa-clock"></i> أسبوعين</span>
+                        <span><i class="fas fa-chalkboard-teacher"></i> إشراف أكاديمي</span>
+                    </div>
+                    <a href="index.html#contact" class="btn-enroll">سجل الآن</a>
+                </div>
+            </div>
+
+            <div class="no-results" id="no-results">
+                <i class="fas fa-search" style="font-size: 3rem; color: #d1d5db; margin-bottom: 15px;"></i>
+                <p>لا توجد دورات متاحة في هذا التصنيف حالياً. سيتم إضافتها قريباً!</p>
+            </div>
+
+        </div>
+    </section>
+
+    <footer>
+        <p>جميع الحقوق محفوظة &copy; 2026 مركز إيجابيون للتدريب | الإدارة التقنية</p>
+    </footer>
+
+    <script>
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const courseCards = document.querySelectorAll('.course-card');
+        const noResultsMsg = document.getElementById('no-results');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // إزالة التفعيل من كل الأزرار
+                filterBtns.forEach(b => b.classList.remove('active'));
+                // تفعيل الزر المضغوط
+                btn.classList.add('active');
+
+                const filterValue = btn.getAttribute('data-filter');
+                let hasVisibleCards = false;
+
+                courseCards.forEach(card => {
+                    if (filterValue === 'all' || card.getAttribute('data-category') === filterValue) {
+                        card.classList.add('show');
+                        hasVisibleCards = true;
+                    } else {
+                        card.classList.remove('show');
+                    }
+                });
+
+                // إظهار رسالة "لا توجد نتائج" إذا لزم الأمر
+                if (!hasVisibleCards) {
+                    noResultsMsg.style.display = 'block';
+                } else {
+                    noResultsMsg.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
